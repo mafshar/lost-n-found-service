@@ -7,3 +7,6 @@ pinocchio==0.4.2
 noseOfYeti==1.6
 expects==0.8.0
 coverage==4.2
+djangorestframework==3.5.3
+django-filter==1.0.1
+markdown==2.6.7
