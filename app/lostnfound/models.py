@@ -11,4 +11,5 @@ from django.contrib.auth.models import User
 class Item(models.model):
     owner = models.ForeignKey('Owner', User)
     code = models.CharField('Code')
+    qr_code = models.CharField('Code')
     name = models.CharField('Name', max_length=40)
