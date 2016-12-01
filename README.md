@@ -26,3 +26,14 @@ NOTE: if python starts to make your terminal session act strangely, type this co
 ```bash
 sudo port selfupdate && sudo port clean python27 && sudo port install python27 +readline
 ```
+
+To run locally:
+
+```bash
+cd /path/to/lost-n-found-service
+workon largescale
+python ./app/manage.py migrate
+python ./app/manage.py runserver
+```
+
+point your browser to: localhost:8000
