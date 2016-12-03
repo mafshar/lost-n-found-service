@@ -14,7 +14,10 @@ from django.http import HttpResponse
 
 #Render the home page
 def index(request):
-    return render(request, 'lostnfound/index.html', {})
+    if request.user.is_authenticated():
+        return user_items(request)
+    else:
+        return render(request, 'lostnfound/index.html', {})
 #Render the login view
 def login(request):
     #TODO: I need a login form here!
@@ -30,7 +33,8 @@ def authenticate_user(request):
     # #get user data from post request
     # #TODO: I need a MyUserModelForm here! (See: scalica/web/scalica/micro/models.py)
     # form = MyUserCreationForm(request.POST)
-    # new_user = form.save(commit=True)
+    # new_user = form.save(commit=False)
+    #
     # user = authenticate(username=new_user.username,
     #                     password=form.clean_password2())
     # if user is not None:

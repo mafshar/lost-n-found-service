@@ -1,22 +1,15 @@
-{% load static %}
-<html>
-<head>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-  <link rel="stylesheet" type="text/css" href="{% static "lostnfound/general.css" %}" />
-</head>
-<body>
-  <h1> Lost-N-Found </h1>
+{% extends "lostnfound/base.html" %}
+{% block content %}
   <h3> Welcome to your go to Lost and Found service! </h3>
   <div>
     <form action="./login" method="GET">
       <button type="submit" class="btn btn-primary">Login</button>
     </form>
   </div>
+  <br>
+  <div>
     <form action="./signup" method="GET">
       <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>
-  <div>
   </div>
-</body>
-</html>
+{% endblock %}
