@@ -11,14 +11,6 @@ from rest_framework import viewsets
 from lostnfound.serializers import UserSerializer, ItemSerializer
 from django.http import HttpResponse
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows users to be viewed or edited.
-#     """
-#     queryset = User.objects.all().order_by('-date_joined')
-#     serializer_class = UserSerializer
-
-# Create your views here.
 
 #Render the home page
 def index(request):
