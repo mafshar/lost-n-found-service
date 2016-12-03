@@ -20,12 +20,15 @@ def index(request):
         return render(request, 'lostnfound/index.html', {})
 #Render the login view
 def login(request):
+    return HttpResponse("Hello! I'm still in the process of being implemented.")
     #TODO: I need a login form here!
-    return render(request, 'lostnfound/login.html', {})
+    # return render(request, 'lostnfound/login.html', {})
+
 #Render the signup view
 def signup(request):
+    return HttpResponse("Hello! I'm still in the process of being implemented.")
     #TODO: I need a signup form here!
-    return render(request, 'lostnfound/signup.html', {})
+    # return render(request, 'lostnfound/signup.html', {})
 
 #Handles a login/signup!
 def authenticate_user(request):
@@ -99,13 +102,21 @@ def register_item(request):
     #     url = 'http://myapp.com/users/' + request.user.pk + '/found/' + new_item.pk #FIXME: what's the hostname for our web app?
     #     new_item.qr_code = generate_qr(new_item.id) #TODO: I need the function call to generate the QR code!
     #     new_item.save()
-    #     return user_items(request)
-    # else: 
+    #     return print_qr_code(request, url, new_item.pk)
+    # else:
     #     #TODO: I need an ItemForm here!
     #     form = ItemForm
     #     return render(request, 'lostnfound/register_item.html',{'form':form, 'user': request.user })
 
     #TODO: NEED TO REDIRECT TO A PAGE SO THE USER CAN PRINT THE QR CODE!
+
+@login_required
+def print_qr_code(request, url, new_item):
+    return HttpResponse("Hello! I'm still in the process of being implemented.")
+    #TODO: implement qr code generation embedded with the param url
+
+    #render(request, 'lostnfound/qr_code.html', {PASS QR CODE IMG HERE, 'item': new_item})
+
 
 
 #A user wants to delete an item.
