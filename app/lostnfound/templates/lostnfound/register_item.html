@@ -1,6 +1,11 @@
 {% extends "lostnfound/base.html" %}
 {% block content %}
-
-
-
+<h3> Register a New Lost-N-Found Item </h3>
+<p> Hooray for responsibility! Simply fill out the form below to keep track of your item </p>
+<div>
+  <form action="/{{user.pk}}/new" method="POST">
+    {{form}}
+    <button type="submit" class="btn btn-primary">Register my Item</button>
+  </form>
+</div>
 {% endblock %}

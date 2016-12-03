@@ -58,17 +58,17 @@ def handle_lost(request):
                 item.save()
             return render(request, 'lostnfound/thankyou.html',{'item': item})
     else:
+        item = Item.objects.get(pk=request.item)
         data = {
             'user_id': request.user,
             'item_id': request.item,
         }
         form = FinderForm(initial=data)
-        return render(request, 'lostnfound/found.html', {'form':form})
+        return render(request, 'lostnfound/found.html', {'form':form, 'item': item})
 
 
 # Authenticated views
 #####################
-
 #Retrieves and renders a list of a user's registered items, if any.
 @login_required
 def user_items(request):
@@ -100,10 +100,12 @@ def register_item(request):
     #     new_item.qr_code = generate_qr(new_item.id) #TODO: I need the function call to generate the QR code!
     #     new_item.save()
     #     return user_items(request)
-    # else: #render the form the user
+    # else: 
     #     #TODO: I need an ItemForm here!
     #     form = ItemForm
-    #     return render(request, 'lostnfound/register_item.html',{'form':form})
+    #     return render(request, 'lostnfound/register_item.html',{'form':form, 'user': request.user })
+
+    #TODO: NEED TO REDIRECT TO A PAGE SO THE USER CAN PRINT THE QR CODE!
 
 
 #A user wants to delete an item.

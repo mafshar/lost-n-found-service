@@ -1,6 +1,24 @@
 {% extends "lostnfound/base.html" %}
 {% block content %}
-
-
-
+<h3> Hello, {{user.first_name}}! </h3>
+<table  class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status (N/A, Found, Lost)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for item in context.items%}
+      <td> {{item.name}} </td>
+      {%if item.found %}
+        <td> FOUND </td>
+      {%elif item.found == False %}
+        <td> LOST </td>
+      {%else%}
+        <td> N/A </td>
+      {%endif%}
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

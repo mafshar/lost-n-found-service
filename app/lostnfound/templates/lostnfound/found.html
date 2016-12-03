@@ -1,6 +1,9 @@
 {% extends "lostnfound/base.html" %}
 {% block content %}
-
-
-
+<h3> Thank you for finding {{str(item)}} </h3>
+<p> Please enter your information below to begin the return process </p>
+<form method="POST">
+    {{ form }}
+    <input type="submit" class="btn btn-primary" value="Submit" />
+</form>
 {% endblock %}
