@@ -35,5 +35,14 @@ router.register(r'users', UserViewSet)
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^login$', views.login, name='login'),
+    url(r'^signup$', views.signup, name='signup'),
+    url(r'^users$', views.authenticate_user, name='auth'),
+    url(r'^users/(?P<user_id>[0-9]+)/products$', views.user_items, name='retrieve_items'),
+    # url(r'^users/(?P<user_id>[0-9]+)/new$', views.SOMETHING, name='retrieve_items'), #TODO edit this idk what function
+    url(r'^users/(?P<user_id>[0-9]+)/products$', views.register_item, name='register_item'),
+    url(r'^users/(?P<user_id>[0-9]+)/found/?P<product_id>[0-9]+)$', views.handle_lost, name='lost_handler'),
+    url(r'^users/(?P<user_id>[0-9]+)/products/?P<product_id>[0-9]+)$', views.delete_item, name='delete_item'),
+    url(r'^users/(?P<user_id>[0-9]+)/products/?P<product_id>[0-9]+)$', views.report_lost, name='report_lost'),
+    # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
