@@ -5,15 +5,6 @@
     <h6> If your item is found, the kind finder simply scans the QR code and enters their email address to begin the process of returning your item! </h6>
     <br>
     <p> Let's get started! </p>
-    <div>
-      <form action="./login" method="GET">
-        <button type="submit" class="btn btn-primary">Login</button>
-      </form>
-    </div>
-    <br>
-    <div>
-      <form action="./signup" method="GET">
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-      </form>
-    </div>
+    New Users: <a href="{% url 'signup' %}">Register</a> </br>
+    Existing Users: <a href="{% url 'login_user' %}">Log In</a>
 {% endblock %}

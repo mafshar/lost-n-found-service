@@ -2,8 +2,13 @@
 {% block content %}
 <h3> Welcome Back! </h3>
 <div>
-  <form action="/users" method="POST">
-    {{form}}
+  {% if badLogin %}
+    <p style="color:red;"> Wrong Username/Password. Try again </p>
+  {%endif%}
+  <form method="POST">
+    {% csrf_token %}
+    Username: <div>{{form.username}}</div> <br>
+    Password : <div>{{form.password}} </div>
     <button type="submit" class="btn btn-primary">Login</button>
   </form>
 </div>

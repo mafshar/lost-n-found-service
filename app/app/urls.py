@@ -19,6 +19,7 @@ from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from lostnfound import views
 from lostnfound.serializers import UserSerializer, ItemSerializer
+from django.contrib.auth import views as auth_views
 
 
 
@@ -29,21 +30,22 @@ class UserViewSet(viewsets.ModelViewSet):
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
+# router.register(r'users', UserViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^', include(router.urls)),
-    url(r'^login$', views.login, name='login'),
+    url(r'^login$', views.login_user, name='login_user'),
     url(r'^signup$', views.signup, name='signup'),
     url(r'^users$', views.authenticate_user, name='auth'),
-    url(r'^users/(?P<user_id>[0-9]+)/products$', views.user_items, name='retrieve_items'),
+    url(r'^users/(?P<user_id>[0-9]+)/products$', views.user_items, name='user_items'),
     # url(r'^users/(?P<user_id>[0-9]+)/new$', views.SOMETHING, name='retrieve_items'), #TODO edit this idk what function
     url(r'^users/(?P<user_id>[0-9]+)/products$', views.register_item, name='register_item'),
-    url(r'^users/(?P<user_id>[0-9]+)/found/(?P<product_id>[0-9]+)$', views.handle_lost, name='lost_handler'),
+    url(r'^users/(?P<user_id>[0-9]+)/found/(?P<product_id>[0-9]+)$', views.handle_lost, name='handle_lost'),
     url(r'^users/(?P<user_id>[0-9]+)/products/(?P<product_id>[0-9]+)$', views.delete_item, name='delete_item'),
+    url('^', include('django.contrib.auth.urls')),
     # url(r'^users/(?P<user_id>[0-9]+)/products/(?P<product_id>[0-9]+)$', views.report_lost, name='report_lost'),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

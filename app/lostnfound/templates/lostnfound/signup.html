@@ -3,7 +3,12 @@
 <h3> Welcome! Let's Get Started </h3>
 <div>
   <form action="/users" method="POST">
-    {{form}}
+    {% csrf_token %}
+    First Name: <div> {{form.first_name}} </div> <br>
+    Username: <div> {{form.username}} </div> <br>
+    Email: <div> {{form.email}} </div>  <br>
+    Password: <div> {{form.password1}} </div>  <br>
+    Password (again): <div> {{form.password2}} </div>  <br>
     <button type="submit" class="btn btn-primary">Sign Up</button>
   </form>
 </div>

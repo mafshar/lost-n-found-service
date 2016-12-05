@@ -3,50 +3,74 @@
 # Views for lostnfound
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
-from models import Item, FinderForm
+from models import Item, FinderForm, MyUserCreationForm
 from rest_framework import viewsets
 from lostnfound.serializers import UserSerializer, ItemSerializer
 from django.http import HttpResponse
-
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect
+import sys
 
 #Render the home page
 def index(request):
     if request.user.is_authenticated():
-        return user_items(request)
+        pk = str(request.user.pk)
+        return HttpResponseRedirect('./users/' + pk + '/products')
     else:
-        return render(request, 'lostnfound/index.html', {})
+        return anon_home(request)
+def anon_home(request):
+    return render(request, 'lostnfound/index.html', {})
+
 #Render the login view
-def login(request):
-    return HttpResponse("Hello! I'm still in the process of being implemented.")
-    #TODO: I need a login form here!
-    # return render(request, 'lostnfound/login.html', {})
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            pk = str(user.pk)
+            return HttpResponseRedirect('./users/' + pk + '/products')
+        else:
+            form = AuthenticationForm()
+            return render(request, 'lostnfound/login.html', {'form': form, 'badLogin':True})
+    else:
+        form = AuthenticationForm()
+        return render(request, 'lostnfound/login.html', {'form': form})
 
 #Render the signup view
+@csrf_exempt
 def signup(request):
-    return HttpResponse("Hello! I'm still in the process of being implemented.")
-    #TODO: I need a signup form here!
-    # return render(request, 'lostnfound/signup.html', {})
+    # return HttpResponse("Hello! I'm still in the process of being implemented.")
+    signup = MyUserCreationForm()
+    return render(request, 'lostnfound/signup.html', {'form': signup})
 
-#Handles a login/signup!
+#Handles a login
+
+#Handles a signup!
+@csrf_exempt
 def authenticate_user(request):
-    return HttpResponse("Hello! I'm still in the process of being implemented.")
-    # #get user data from post request
-    # #TODO: I need a MyUserModelForm here! (See: scalica/web/scalica/micro/models.py)
-    # form = MyUserCreationForm(request.POST)
-    # new_user = form.save(commit=False)
-    #
-    # user = authenticate(username=new_user.username,
-    #                     password=form.clean_password2())
-    # if user is not None:
-    #     login(request, user)
-    # else:
-    #     raise Exception
-    # return user_items(request)
+    if request.method == 'POST':
+        #get user data from post request
+        form = MyUserCreationForm(request.POST)
+
+        if form.is_valid():
+            new_user = form.save(commit=True)
+            login(request, new_user)
+        else:
+            print form.errors
+            raise Exception
+        return render(request, 'lostnfound/items.html', {'user': new_user})
+    else:
+        form = MyUserCreationForm
+        return render(request, 'lostnfound/signup.html', {'form': form})
 
 #Handles GET & POST by a finder
+@csrf_exempt
 def handle_lost(request):
     if request.method == 'POST':
         finder = FinderForm(request.POST)
@@ -74,10 +98,10 @@ def handle_lost(request):
 #####################
 #Retrieves and renders a list of a user's registered items, if any.
 @login_required
-def user_items(request):
+def user_items(request, user_id):
     #Retrieve user from the request object
     try:
-        my_user = User.objects.get(user=request.user)
+        my_user = User.objects.get(pk=user_id)
     except IndexError:
         raise Exception #yikes, there's no user!
     #Find all of user items
@@ -124,10 +148,6 @@ def delete_item(request):
     delete_item = Item.objects.get(pk=request.item) #TODO: Figure out how to handle filtering using a foreign key's primary key
     delete_item.delete()
     return user_items(request)
-
-@login_required
-def report_lost(request):
-    return HttpResponse("Hello! I'm still in the process of being implemented.")
 
 @login_required
 def report_lost(request):

@@ -1,3 +1,14 @@
 body{
   text-align:center;
 }
+.table {
+    border-radius: 10px;
+    width: 25%;
+    margin: 0px auto;
+    float: none;
+}
+.table th {
+
+    text-align: center;
+
+}
