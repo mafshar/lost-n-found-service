@@ -41,8 +41,8 @@ urlpatterns = [
     url(r'^users/(?P<user_id>[0-9]+)/products$', views.user_items, name='retrieve_items'),
     # url(r'^users/(?P<user_id>[0-9]+)/new$', views.SOMETHING, name='retrieve_items'), #TODO edit this idk what function
     url(r'^users/(?P<user_id>[0-9]+)/products$', views.register_item, name='register_item'),
-    url(r'^users/(?P<user_id>[0-9]+)/found/?P<product_id>[0-9]+)$', views.handle_lost, name='lost_handler'),
-    url(r'^users/(?P<user_id>[0-9]+)/products/?P<product_id>[0-9]+)$', views.delete_item, name='delete_item'),
-    url(r'^users/(?P<user_id>[0-9]+)/products/?P<product_id>[0-9]+)$', views.report_lost, name='report_lost'),
+    url(r'^users/(?P<user_id>[0-9]+)/found/(?P<product_id>[0-9]+)$', views.handle_lost, name='lost_handler'),
+    url(r'^users/(?P<user_id>[0-9]+)/products/(?P<product_id>[0-9]+)$', views.delete_item, name='delete_item'),
+    # url(r'^users/(?P<user_id>[0-9]+)/products/(?P<product_id>[0-9]+)$', views.report_lost, name='report_lost'),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
