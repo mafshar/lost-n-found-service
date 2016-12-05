@@ -11,19 +11,21 @@
     </thead>
     <tbody>
         {%for item in items%}
-          <td> {{item.name}} </td>
-          {%if item.found %}
-            <td> FOUND </td>
-          {%elif item.found == False %}
-            <td> LOST </td>
-          {%else%}
-            <td> N/A </td>
-          {%endif%}
+        <tr>
+            <td> {{item.name}} </td>
+            {%if item.found %}
+              <td> FOUND </td>
+            {%elif item.found == False %}
+              <td> LOST </td>
+            {%else%}
+              <td> N/A </td>
+            {%endif%}
+          <tr>
         {% endfor %}
-
     </tbody>
   </table>
   {%else%}
   <p> Looks like you haven't registered any items! Let's change that </p>
 {%endif%}
+<br><a href="./new" class="btn btn-primary"> Register an Item </a>
 {% endblock %}

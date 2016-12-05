@@ -2,14 +2,11 @@
 # Large Scale Web Apps Fall 2016
 # Views for lostnfound
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
-from models import Item, FinderForm, MyUserCreationForm
-from rest_framework import viewsets
-from lostnfound.serializers import UserSerializer, ItemSerializer
+from models import Item, FinderForm, ItemForm, MyUserCreationForm
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
@@ -43,13 +40,9 @@ def login_user(request):
         return render(request, 'lostnfound/login.html', {'form': form})
 
 #Render the signup view
-@csrf_exempt
 def signup(request):
-    # return HttpResponse("Hello! I'm still in the process of being implemented.")
     signup = MyUserCreationForm()
     return render(request, 'lostnfound/signup.html', {'form': signup})
-
-#Handles a login
 
 #Handles a signup!
 @csrf_exempt
@@ -57,17 +50,15 @@ def authenticate_user(request):
     if request.method == 'POST':
         #get user data from post request
         form = MyUserCreationForm(request.POST)
-
         if form.is_valid():
             new_user = form.save(commit=True)
             login(request, new_user)
+            pk = str(new_user.pk)
+            return HttpResponseRedirect('./users/' + pk + '/products')
         else:
-            print form.errors
-            raise Exception
-        return render(request, 'lostnfound/items.html', {'user': new_user})
+            return HttpResponseRedirect('./signup')
     else:
-        form = MyUserCreationForm
-        return render(request, 'lostnfound/signup.html', {'form': form})
+        return HttpResponseRedirect('./signup')
 
 #Handles GET & POST by a finder
 @csrf_exempt
@@ -115,28 +106,23 @@ def user_items(request, user_id):
 
 #Handles a GET and POST for registering an item
 @login_required
-def register_item(request):
-    return HttpResponse("Hello! I'm still in the process of being implemented.")
-    # if request.method == 'POST':
-    #     #TODO: I need an ItemForm here!
-    #     form = ItemForm(request.POST)
-    #     new_item = form.save(commit=True) #Need to save the db object now in order to access its id.
-    #     new_item.owner = request.user
-    #     #Constructing URL for QR code
-    #     url = 'http://myapp.com/users/' + request.user.pk + '/found/' + new_item.pk #FIXME: what's the hostname for our web app?
-    #     new_item.qr_code = generate_qr(new_item.id) #TODO: I need the function call to generate the QR code!
-    #     new_item.save()
-    #     return print_qr_code(request, url, new_item.pk)
-    # else:
-    #     #TODO: I need an ItemForm here!
-    #     form = ItemForm
-    #     return render(request, 'lostnfound/register_item.html',{'form':form, 'user': request.user })
-
-    #TODO: NEED TO REDIRECT TO A PAGE SO THE USER CAN PRINT THE QR CODE!
+def register_item(request, user_id):
+    if request.method == 'POST':
+        form = ItemForm(request.POST)
+        new_item = form.save(commit=False) #Need to save the db object now in order to access its id.
+        new_item.owner = request.user
+        #Constructing URL for QR code
+        url = 'http://myapp.com/users/' + str(request.user.pk) + '/found/' + str(new_item.pk) #FIXME: what's the hostname for our web app?
+        # new_item.qr_code = generate_qr(new_item.id) #TODO: I need the function call to generate the QR code!
+        new_item.save()
+        return print_qr_code(request, url, new_item.pk)
+    else:
+        form = ItemForm
+        return render(request, 'lostnfound/register_item.html',{'form':form, 'user': request.user })
 
 @login_required
 def print_qr_code(request, url, new_item):
-    return HttpResponse("Hello! I'm still in the process of being implemented.")
+    return HttpResponse("QR Code Print Page - Please implement me!")
     #TODO: implement qr code generation embedded with the param url
     #render(request, 'lostnfound/qr_code.html', {PASS QR CODE IMG HERE, 'item': new_item})
 

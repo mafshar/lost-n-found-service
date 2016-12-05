@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import models
 from django import forms
+from django.forms import ModelForm
 
 class Item(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='Owner')
@@ -20,10 +21,18 @@ class Item(models.Model):
         return self.name + " owned by " + self.owner.first_name
 
 class FinderForm(forms.Form):
-    name = forms.CharField()
+    name = forms.CharField(max_length=100)
     email = forms.EmailField()
     user_id = forms.CharField(widget=forms.HiddenInput)
     item_id = forms.CharField(widget=forms.HiddenInput)
+
+class ItemForm(ModelForm):
+    name = forms.CharField(max_length=50, required=True)
+    class Meta:
+        model = Item
+        fields = ("name",)
+        exclude = ("owner","qr_code")
+
 
 class MyUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=50, required=True)

@@ -41,8 +41,7 @@ urlpatterns = [
     url(r'^signup$', views.signup, name='signup'),
     url(r'^users$', views.authenticate_user, name='auth'),
     url(r'^users/(?P<user_id>[0-9]+)/products$', views.user_items, name='user_items'),
-    # url(r'^users/(?P<user_id>[0-9]+)/new$', views.SOMETHING, name='retrieve_items'), #TODO edit this idk what function
-    url(r'^users/(?P<user_id>[0-9]+)/products$', views.register_item, name='register_item'),
+    url(r'^users/(?P<user_id>[0-9]+)/new$', views.register_item, name='register_item'),
     url(r'^users/(?P<user_id>[0-9]+)/found/(?P<product_id>[0-9]+)$', views.handle_lost, name='handle_lost'),
     url(r'^users/(?P<user_id>[0-9]+)/products/(?P<product_id>[0-9]+)$', views.delete_item, name='delete_item'),
     url('^', include('django.contrib.auth.urls')),

@@ -11,7 +11,7 @@
     <h1> Lost-N-Found </h1>
     <div id="header">
       {% if user.is_authenticated %}
-        {{ user.username }}
+        {{ user.username }} <br>
         <a href="{% url 'logout' %}">Log Out</a>
       {% endif %}
     </div>
