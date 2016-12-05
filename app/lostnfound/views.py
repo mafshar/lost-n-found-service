@@ -12,6 +12,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
 import sys
+#import pyqrcode
+import qrcode
 
 #Render the home page
 def index(request):
@@ -102,29 +104,62 @@ def user_items(request, user_id):
     }
     return render(request, 'lostnfound/items.html', context)
 
+#function to generate unique item id that includes user id in the first part
+@login_required
+def generate_item_id(user):
+ 
+    user_id = user.id
+    user_items = Item.objects.filter(owner=user)
+    num_of_items = len(user_items) + 1
+    item_id = int(str(user_id) + str(num_of_item))
+
+    return item_id
 
 #Handles a GET and POST for registering an item
 @login_required
 def register_item(request, user_id):
+
+    try:
+	my_user = User.objects.get(user=request.user)
+    except IndexError:
+	raise Exception #yikes, there's no user!
+
     if request.method == 'POST':
         form = ItemForm(request.POST)
         new_item = form.save(commit=False) #Need to save the db object now in order to access its id.
-        new_item.owner = request.user
-        #Constructing URL for QR code
-        url = 'http://myapp.com/users/' + str(request.user.pk) + '/found/' + str(new_item.pk) #FIXME: what's the hostname for our web app?
-        # new_item.qr_code = generate_qr(new_item.id) #TODO: I need the function call to generate the QR code!
-        new_item.save()
-        return print_qr_code(request, url, new_item.pk)
-    else:
-        form = ItemForm
-        return render(request, 'lostnfound/register_item.html',{'form':form, 'user': request.user })
+        new_item.owner = my_user
+	new_item.found = NULL
+	new_item.item_id = generate_item_id(my_user)
+	new_item.save()
 
-#TODO: IMPLEMENT ME!
+        #Constructing URL for QR code
+        #url = 'http://myapp.com/users/' + str(request.user.pk) + '/found/' + str(new_item.pk) #FIXME: what's the hostname for our web app?
+        # new_item.qr_code = generate_qr(new_item.id) #TODO: I need the function call to generate the QR code!
+	
+	#TODO: edit later to include hostname for app
+	url = '/recovered/' + str(new_item.item_id) + '/'
+	uri = request.build_absolute_uri(url)
+
+        #return print_qr_code(request, url, new_item.pk)
+	return print_qr_code(request, uri, new_item.item_id)
+
+    else:
+        form = ItemForm()
+        return render(request, 'lostnfound/register_item.html',{'form':form, 'user': my_user })
+
 @login_required
 def print_qr_code(request, url, new_item):
-    return HttpResponse("QR Code Print Page - Please implement me!")
-    #TODO: implement qr code generation embedded with the param url
-    #render(request, 'lostnfound/qr_code.html', {PASS QR CODE IMG HERE, 'item': new_item})
+
+    #qr = pyqrcode.create(url)
+    #qr_filename = str(new_item) + '.png'
+    #qr.png(qr_filename, scale=5)
+
+    qr = qrcode.make(url)
+    qr_filename = str(new_item) + '.png'
+    qr.save(settings.MEDIA_ROOT + qr_filename)
+
+    return render(request, 'lostnfound/qr_code.html', {'qr_url': settings.MEDIA_URL + qr_filename, 'item': new_item}) 
+
 
 #TODO: IMPLEMENT ME!
 #A user wants to delete an item.
