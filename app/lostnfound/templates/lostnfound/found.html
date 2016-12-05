@@ -3,7 +3,10 @@
 <h3> Thank you for finding {{str(item)}} </h3>
 <p> Please enter your information below to begin the return process </p>
 <form method="POST">
-    {{ form }}
+    Name: <div> {{form.name}} </div> <br>
+    Email: <div> {{form.email}} </div> <br>
+    {{form.user_id}}
+    {{form.item_id}}
     <input type="submit" class="btn btn-primary" value="Submit" />
 </form>
 {% endblock %}

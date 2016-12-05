@@ -1,6 +1,7 @@
 # Radhika Mattoo, rm3485@nyu.edu
 # Large Scale Web Apps Fall 2016
 # Views for lostnfound
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
@@ -44,8 +45,7 @@ def signup(request):
     signup = MyUserCreationForm()
     return render(request, 'lostnfound/signup.html', {'form': signup})
 
-#Handles a signup!
-@csrf_exempt
+#Handles a signup
 def authenticate_user(request):
     if request.method == 'POST':
         #get user data from post request
@@ -61,8 +61,7 @@ def authenticate_user(request):
         return HttpResponseRedirect('./signup')
 
 #Handles GET & POST by a finder
-@csrf_exempt
-def handle_lost(request):
+def handle_lost(request, user_id, product_id):
     if request.method == 'POST':
         finder = FinderForm(request.POST)
         if form.is_valid():
@@ -76,10 +75,10 @@ def handle_lost(request):
                 item.save()
             return render(request, 'lostnfound/thankyou.html',{'item': item})
     else:
-        item = Item.objects.get(pk=request.item)
+        item = Item.objects.get(pk=user_id)
         data = {
-            'user_id': request.user,
-            'item_id': request.item,
+            'user_id': user_id,
+            'item_id': product_id,
         }
         form = FinderForm(initial=data)
         return render(request, 'lostnfound/found.html', {'form':form, 'item': item})
@@ -120,21 +119,23 @@ def register_item(request, user_id):
         form = ItemForm
         return render(request, 'lostnfound/register_item.html',{'form':form, 'user': request.user })
 
+#TODO: IMPLEMENT ME!
 @login_required
 def print_qr_code(request, url, new_item):
     return HttpResponse("QR Code Print Page - Please implement me!")
     #TODO: implement qr code generation embedded with the param url
     #render(request, 'lostnfound/qr_code.html', {PASS QR CODE IMG HERE, 'item': new_item})
 
-
+#TODO: IMPLEMENT ME!
 #A user wants to delete an item.
 @login_required
-def delete_item(request):
+def delete_item(request, user_id, product_id):
     #delete the item based on the user and the primary key
     delete_item = Item.objects.get(pk=request.item) #TODO: Figure out how to handle filtering using a foreign key's primary key
     delete_item.delete()
     return user_items(request)
 
+#TODO: IMPLEMENT ME!
 @login_required
-def report_lost(request):
+def report_lost(request, user_id, product_id):
     return HttpResponse("Hello! I'm still in the process of being implemented.")
