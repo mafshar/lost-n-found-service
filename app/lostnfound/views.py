@@ -11,9 +11,9 @@ from models import Item, FinderForm, ItemForm, MyUserCreationForm
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
+from django.conf import settings
 import sys
-#import pyqrcode
-import qrcode
+from qrcode import *
 
 #Render the home page
 def index(request):
@@ -44,8 +44,12 @@ def login_user(request):
 
 #Render the signup view
 def signup(request):
-    signup = MyUserCreationForm()
-    return render(request, 'lostnfound/signup.html', {'form': signup})
+    if request.user.is_authenticated():
+        pk = str(request.user.pk)
+        return HttpResponseRedirect('./users/' + pk + '/products')
+    else:
+        signup = MyUserCreationForm()
+        return render(request, 'lostnfound/signup.html', {'form': signup})
 
 #Handles a signup
 def authenticate_user(request):
@@ -105,70 +109,52 @@ def user_items(request, user_id):
     return render(request, 'lostnfound/items.html', context)
 
 #function to generate unique item id that includes user id in the first part
-@login_required
 def generate_item_id(user):
- 
-    user_id = user.id
-    user_items = Item.objects.filter(owner=user)
+    user_id = user.pk
+    user_items = Item.objects.filter(owner__pk=user_id)
     num_of_items = len(user_items) + 1
-    item_id = int(str(user_id) + str(num_of_item))
+    item_id = int(str(user_id) + str(num_of_items))
 
     return item_id
 
 #Handles a GET and POST for registering an item
 @login_required
 def register_item(request, user_id):
-
-    try:
-	my_user = User.objects.get(user=request.user)
-    except IndexError:
-	raise Exception #yikes, there's no user!
-
+    my_user = User.objects.get(pk=user_id)
     if request.method == 'POST':
         form = ItemForm(request.POST)
-        new_item = form.save(commit=False) #Need to save the db object now in order to access its id.
+        new_item = form.save(commit=False)
         new_item.owner = my_user
-	new_item.found = NULL
-	new_item.item_id = generate_item_id(my_user)
-	new_item.save()
-
-        #Constructing URL for QR code
-        #url = 'http://myapp.com/users/' + str(request.user.pk) + '/found/' + str(new_item.pk) #FIXME: what's the hostname for our web app?
-        # new_item.qr_code = generate_qr(new_item.id) #TODO: I need the function call to generate the QR code!
-	
-	#TODO: edit later to include hostname for app
-	url = '/recovered/' + str(new_item.item_id) + '/'
-	uri = request.build_absolute_uri(url)
-
-        #return print_qr_code(request, url, new_item.pk)
-	return print_qr_code(request, uri, new_item.item_id)
-
+        new_item.item_id = generate_item_id(my_user)
+        new_item.save()
+        url = "/users/" + str(my_user.pk) + "/found/" + str(new_item.pk)
+        uri = request.build_absolute_uri(url)
+        return print_qr_code(request, uri, new_item)
     else:
         form = ItemForm()
         return render(request, 'lostnfound/register_item.html',{'form':form, 'user': my_user })
 
 @login_required
 def print_qr_code(request, url, new_item):
+    qr = QRCode(version=20, error_correction=ERROR_CORRECT_M)
+    qr.add_data(url)
+    qr.make()
+    img = qr.make_image()
+    qr_filename = str(new_item.pk) + '.png'
+    img.save(settings.MEDIA_ROOT + qr_filename)
 
-    #qr = pyqrcode.create(url)
-    #qr_filename = str(new_item) + '.png'
-    #qr.png(qr_filename, scale=5)
-
-    qr = qrcode.make(url)
-    qr_filename = str(new_item) + '.png'
-    qr.save(settings.MEDIA_ROOT + qr_filename)
-
-    return render(request, 'lostnfound/qr_code.html', {'qr_url': settings.MEDIA_URL + qr_filename, 'item': new_item}) 
+    return render(request, 'lostnfound/qr_code.html', {'qr_url': settings.MEDIA_ROOT + qr_filename, 'item': new_item})
 
 
 #TODO: IMPLEMENT ME!
 #A user wants to delete an item.
 @login_required
 def delete_item(request, user_id, product_id):
+    return HttpResponse("Hello! I'm still in the process of being implemented.")
     #delete the item based on the user and the primary key
-    delete_item = Item.objects.get(pk=request.item) #TODO: Figure out how to handle filtering using a foreign key's primary key
-    delete_item.delete()
-    return user_items(request)
+    # delete_item = Item.objects.get(pk=request.item) #TODO: Figure out how to handle filtering using a foreign key's primary key
+    # delete_item.delete()
+    # return user_items(request)
 
 #TODO: IMPLEMENT ME!
 @login_required

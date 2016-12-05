@@ -52,7 +52,3 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
-
-if settings.DEBUG:
-    urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
