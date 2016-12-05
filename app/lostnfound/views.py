@@ -114,9 +114,7 @@ def register_item(request):
 def print_qr_code(request, url, new_item):
     return HttpResponse("Hello! I'm still in the process of being implemented.")
     #TODO: implement qr code generation embedded with the param url
-
     #render(request, 'lostnfound/qr_code.html', {PASS QR CODE IMG HERE, 'item': new_item})
-
 
 
 #A user wants to delete an item.
@@ -126,6 +124,10 @@ def delete_item(request):
     delete_item = Item.objects.get(pk=request.item) #TODO: Figure out how to handle filtering using a foreign key's primary key
     delete_item.delete()
     return user_items(request)
+
+@login_required
+def report_lost(request):
+    return HttpResponse("Hello! I'm still in the process of being implemented.")
 
 @login_required
 def report_lost(request):
