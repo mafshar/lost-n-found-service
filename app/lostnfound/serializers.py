@@ -1,3 +1,5 @@
+#Mohammad Afshar, @mafshar, ma2510@nyu.edu
+
 '''
 Provide a way of serializing and deserializing the <Models>
 instances into representations such as json

@@ -1,3 +1,5 @@
+#Mohammad Afshar, @mafshar, ma2510@nyu.edu
+
 """
 Django settings for app project.
 

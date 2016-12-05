@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+#Mohammad Afshar, @mafshar, ma2510@nyu.edu
+
 import os
 import sys
 

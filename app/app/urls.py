@@ -1,3 +1,4 @@
+#Mohammad Afshar, @mafshar, ma2510@nyu.edu
 """app URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:

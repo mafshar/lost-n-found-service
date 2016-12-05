@@ -1,5 +1,6 @@
 # Create your models here.
 #Radhika Mattoo, @radhikamattoo, rm3485@nyu.edu
+#Mohammad Afshar, @mafshar, ma2510@nyu.edu
 #Lost-n-Found Service
 #Django Models
 from django.contrib.auth.forms import UserCreationForm
