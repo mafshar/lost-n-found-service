@@ -149,7 +149,6 @@ def print_qr_code(request, url, new_item):
     img.save(settings.MEDIA_ROOT + qr_filename)
 
     template_url = settings.MEDIA_URL +  qr_filename
-    print template_url
     return render(request, 'lostnfound/qr_code.html', {'qr_url': template_url , 'item': new_item})
 
 #TODO: IMPLEMENT ME!
