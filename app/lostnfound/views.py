@@ -102,9 +102,14 @@ def user_items(request, user_id):
         raise Exception #yikes, there's no user!
     #Find all of user items
     my_items = Item.objects.filter(owner=my_user)
+    show_form = False
+    for item in my_items:
+        if item.found is None:
+            show_form = True
     context = {
         'user' : my_user,
-        'items' : my_items
+        'items' : my_items,
+        'show_form' : show_form
     }
     return render(request, 'lostnfound/items.html', context)
 
@@ -147,11 +152,10 @@ def print_qr_code(request, url, new_item):
     print template_url
     return render(request, 'lostnfound/qr_code.html', {'qr_url': template_url , 'item': new_item})
 
-
 #TODO: IMPLEMENT ME!
 #A user wants to delete an item.
 @login_required
-def delete_item(request, user_id, product_id):
+def delete_item(request, user_id):
     return HttpResponse("Hello! I'm still in the process of being implemented.")
     #delete the item based on the user and the primary key
     # delete_item = Item.objects.get(pk=request.item) #TODO: Figure out how to handle filtering using a foreign key's primary key
@@ -160,5 +164,10 @@ def delete_item(request, user_id, product_id):
 
 #TODO: IMPLEMENT ME!
 @login_required
-def report_lost(request, user_id, product_id):
-    return HttpResponse("Hello! I'm still in the process of being implemented.")
+def report_lost(request, user_id):
+    if request.method == "POST":
+        item_id = request.POST['lost']
+        item = Item.objects.get(pk=item_id)
+        item.found = False
+        item.save()
+        return HttpResponseRedirect('/users/' + user_id + '/products')

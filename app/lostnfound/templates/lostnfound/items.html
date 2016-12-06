@@ -23,9 +23,24 @@
           <tr>
         {% endfor %}
     </tbody>
-  </table>
+  </table><br> <br>
+    {%if show_form %}
+      <form method="POST" action="./report/products">
+          <label for="lost">Report a Lost Item</label>
+          <select class="form-control input-small" name="lost">
+            <option value="" disabled selected>--Select an Item--</option>
+            {%for item in items%}
+              {%if item.found == None%}
+                <option value={{item.pk}} >{{item.name}}</option>
+              {%endif%}
+            {%endfor%}
+          </select><br>
+          <button type="submit" class="btn btn-primary"> Report Lost </button>
+      </form> <br>
+      {%endif%}
   {%else%}
   <p> Looks like you haven't registered any items! Let's change that </p>
 {%endif%}
 <br><a href="./new" class="btn btn-primary"> Register an Item </a>
+
 {% endblock %}

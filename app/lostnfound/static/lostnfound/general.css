@@ -12,3 +12,19 @@ body{
     text-align: center;
 
 }
+ .input-small {
+     border-radius: 5px;
+     width: 20%;
+     margin: 0px auto;
+     float: none;
+     text-align: center;
+ }
+ select {
+   text-align: center;
+   text-align-last: center;
+   /* webkit*/
+ }
+ option {
+   text-align: left;
+   /* reset to left*/
+ }
