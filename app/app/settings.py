@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -67,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -112,10 +112,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
+STATIC_ROOT = ''
 STATIC_URL = '/static/'
+STATICFILES_DIRS = ( os.path.join('static'), )
 
 #Media
+PROJ_DIR = BASE_DIR + "/lostnfound"
+MEDIA_ROOT = PROJ_DIR + STATIC_URL + 'media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'lostnfound/media/')
-MEDIA_URL = 'lostnfound/media/'
+MEDIA_URL = MEDIA_ROOT

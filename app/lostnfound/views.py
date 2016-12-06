@@ -140,10 +140,12 @@ def print_qr_code(request, url, new_item):
     qr.add_data(url)
     qr.make()
     img = qr.make_image()
-    qr_filename = str(new_item.pk) + '.png'
+    qr_filename = str(new_item.pk) + ".png"
     img.save(settings.MEDIA_ROOT + qr_filename)
 
-    return render(request, 'lostnfound/qr_code.html', {'qr_url': settings.MEDIA_ROOT + qr_filename, 'item': new_item})
+    template_url = settings.MEDIA_URL +  qr_filename
+    print template_url
+    return render(request, 'lostnfound/qr_code.html', {'qr_url': template_url , 'item': new_item})
 
 
 #TODO: IMPLEMENT ME!
