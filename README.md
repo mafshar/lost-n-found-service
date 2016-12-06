@@ -55,4 +55,4 @@ python ./app/manage.py migrate
 python ./app/manage.py runserver
 ```
 
-point your browser to: localhost:8000
+point your browser to `localhost:8000`
