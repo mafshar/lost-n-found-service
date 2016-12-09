@@ -134,8 +134,6 @@ def register_item(request, user_id):
         new_item.save()
         url = "/users/" + str(my_user.pk) + "/found/" + str(new_item.pk)
         uri = request.build_absolute_uri(url)
-        new_item.qr_code = uri
-        new_item.save()
         return print_qr_code(request, uri, new_item)
     else:
         form = ItemForm()
@@ -148,8 +146,10 @@ def print_qr_code(request, url, new_item):
     qr.make()
     img = qr.make_image()
     qr_filename = str(new_item.pk) + ".png"
-    img.save(settings.MEDIA_ROOT + qr_filename)
-
+    if new_item.qr_code is None:
+        new_item.qr_code = url
+        img.save(settings.MEDIA_ROOT + qr_filename)
+        new_item.save()
     template_url = settings.MEDIA_URL +  qr_filename
     return render(request, 'lostnfound/qr_code.html', {'qr_url': template_url , 'item': new_item})
 

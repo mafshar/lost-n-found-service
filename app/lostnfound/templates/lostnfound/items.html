@@ -25,6 +25,7 @@
     </tbody>
   </table><br> <br>
     {%if show_form %}
+    <hr>
       <form method="POST" action="./report/products">
           <label for="lost">Report a Lost Item</label>
           <select class="form-control input-small" name="lost">
@@ -36,7 +37,8 @@
             {%endfor%}
           </select><br>
           <button type="submit" class="btn btn-primary"> Report Lost </button>
-      </form> <br>
+      </form>
+      <hr>
       {%endif%}
    </div>
    <a href="./products/settings" class="btn btn-primary"> Delete an Item </a>
