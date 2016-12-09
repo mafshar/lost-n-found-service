@@ -1,0 +1,17 @@
+{% extends "lostnfound/base.html" %}
+{% block content %}
+<h3> Settings </h3>
+<p> Select an item and either delete it, or reprint its QR code.</p>
+<p> NOTE: Deleting an item means someone who scans your item's QR code will not be able to communicate and return your item to you <p> <br>
+<form method="POST">
+    <label for="settings">Select an Item</label>
+    <select class="form-control input-small" name="settings" id="select">
+      <option value="" disabled selected>--Select an Item--</option>
+      {%for item in items%}
+        <option value={{item.pk}} >{{item.name}}</option>
+      {%endfor%}
+    </select><br>
+    <button type="submit" name="delete" class="btn btn-primary"> Delete Item  </button>
+    <button type="submit" name="reprint" class="btn btn-primary"> Reprint Code </button>
+</form> <br>
+{% endblock %}

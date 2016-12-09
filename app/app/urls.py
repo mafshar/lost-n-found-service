@@ -45,9 +45,9 @@ urlpatterns = [
     url(r'^users$', views.authenticate_user, name='auth'),
     url(r'^users/(?P<user_id>[0-9]+)/products$', views.user_items, name='user_items'),
     url(r'^users/(?P<user_id>[0-9]+)/new$', views.register_item, name='register_item'),
-    url(r'^users/(?P<user_id>[0-9]+)/products$/(?P<product_id>[0-9]+)$', views.print_qr_code, name='print_qr_code'),
+    url(r'^users/(?P<user_id>[0-9]+)/products/(?P<product_id>[0-9]+)$', views.reprint_code, name='reprint_code'),
     url(r'^users/(?P<user_id>[0-9]+)/found/(?P<product_id>[0-9]+)$', views.handle_lost, name='handle_lost'),
-    url(r'^users/(?P<user_id>[0-9]+)/products/settings', views.delete_item, name='delete_item'),
+    url(r'^users/(?P<user_id>[0-9]+)/products/settings', views.item_settings, name='item_settings'),
     url(r'^users/(?P<user_id>[0-9]+)/report/products$', views.report_lost, name='report_lost'),
     url('^', include('django.contrib.auth.urls')),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))

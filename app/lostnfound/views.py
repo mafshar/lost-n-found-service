@@ -139,6 +139,11 @@ def register_item(request, user_id):
         form = ItemForm()
         return render(request, 'lostnfound/register_item.html',{'form':form, 'user': my_user })
 
+def reprint_code(request, user_id, product_id):
+    item = Item.objects.get(pk=product_id)
+    url = item.qr_code
+    return print_qr_code(request, url, item)
+
 @login_required
 def print_qr_code(request, url, new_item):
     qr = QRCode(version=20, error_correction=ERROR_CORRECT_M)
@@ -153,18 +158,26 @@ def print_qr_code(request, url, new_item):
     template_url = settings.MEDIA_URL +  qr_filename
     return render(request, 'lostnfound/qr_code.html', {'qr_url': template_url , 'item': new_item})
 
-#A user wants to delete an item.
+#A user wants to change an item's settings
 @login_required
-def delete_item(request, user_id):
+def item_settings(request, user_id):
     if request.method == 'POST':
-        item_id = request.POST['delete']
+        item_id = request.POST['settings']
         item = Item.objects.get(pk=item_id)
-        item.delete()
-        return HttpResponseRedirect('/users/' + user_id + '/products')
+        if 'delete' in request.POST:
+            print "DELETING AN ITEM"
+            item.delete()
+            return HttpResponseRedirect('/users/' + user_id + '/products')
+        else:
+            print "JUST REPRINTING CODE"
+            redirect = "/users/" + user_id + "/products/" + item_id
+            return HttpResponseRedirect(redirect)
+
+
     else:
         my_user = User.objects.get(pk=user_id)
         my_items = Item.objects.filter(owner=my_user)
-        return render(request, 'lostnfound/delete.html', {'items': my_items })
+        return render(request, 'lostnfound/settings.html', {'items': my_items })
 
 @login_required
 def report_lost(request, user_id):
