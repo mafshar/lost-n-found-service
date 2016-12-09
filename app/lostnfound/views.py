@@ -146,9 +146,9 @@ def print_qr_code(request, user_id, product_id):
     save = False
     if item.qr_code is None: #new item!
         save = True
-        url = "/users/" + user_id + "/found/" + product_id
+        url = "/users/" + str(user_id) + "/found/" + str(product_id)
         uri = request.build_absolute_uri(url)
-        item.qr_code = url
+        item.qr_code = uri
         item.save()
     url = item.qr_code
     qr = QRCode(version=20, error_correction=ERROR_CORRECT_M)
