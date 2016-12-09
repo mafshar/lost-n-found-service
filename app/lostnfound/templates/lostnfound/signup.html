@@ -1,6 +1,20 @@
 {% extends "lostnfound/base.html" %}
 {% block content %}
 <h3> Welcome! Let's Get Started </h3>
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
 <div>
   <form action="/users" method="POST">
     {% csrf_token %}

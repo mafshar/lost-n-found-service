@@ -62,7 +62,7 @@ def authenticate_user(request):
             pk = str(new_user.pk)
             return HttpResponseRedirect('./users/' + pk + '/products')
         else:
-            return HttpResponseRedirect('./signup')
+            return render(request, 'lostnfound/signup.html', {'form': form})
     else:
         return HttpResponseRedirect('./')
 
