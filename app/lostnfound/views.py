@@ -64,30 +64,31 @@ def authenticate_user(request):
         else:
             return HttpResponseRedirect('./signup')
     else:
-        return HttpResponseRedirect('./signup')
+        return HttpResponseRedirect('./')
 
 #Handles GET & POST by a finder
 def handle_lost(request, user_id, product_id):
     if request.method == 'POST':
         finder = FinderForm(request.POST)
-        if form.is_valid():
-            finder_name = finder.name
-            finder_email = finder.email
-            user_id = finder.user_id
-            item_id = finder.item_id
-            item = Item.objects.get(pk=item_id, owner__pk=user_id) #TODO: Figure out how to handle filtering using a foreign key's primary key
+        if finder.is_valid():
+            finder_name = finder.data['name']
+            finder_email = finder.data['email']
+            user_id = finder.data['user_id']
+            item_id = finder.data['item_id']
+            item = Item.objects.get(pk=item_id, owner__pk=user_id)
             if item is not None:
                 item.found = True
                 item.save()
             return render(request, 'lostnfound/thankyou.html',{'item': item})
     else:
-        item = Item.objects.get(pk=user_id)
+        item = Item.objects.get(pk=product_id)
+        user = User.objects.get(pk=user_id)
         data = {
             'user_id': user_id,
             'item_id': product_id,
         }
         form = FinderForm(initial=data)
-        return render(request, 'lostnfound/found.html', {'form':form, 'item': item})
+        return render(request, 'lostnfound/found.html', {'form':form, 'item': str(item), 'user': user.first_name})
 
 
 # Authenticated views
@@ -130,10 +131,11 @@ def register_item(request, user_id):
         form = ItemForm(request.POST)
         new_item = form.save(commit=False)
         new_item.owner = my_user
-        new_item.item_id = generate_item_id(my_user)
         new_item.save()
         url = "/users/" + str(my_user.pk) + "/found/" + str(new_item.pk)
         uri = request.build_absolute_uri(url)
+        new_item.qr_code = uri
+        new_item.save()
         return print_qr_code(request, uri, new_item)
     else:
         form = ItemForm()
@@ -151,17 +153,19 @@ def print_qr_code(request, url, new_item):
     template_url = settings.MEDIA_URL +  qr_filename
     return render(request, 'lostnfound/qr_code.html', {'qr_url': template_url , 'item': new_item})
 
-#TODO: IMPLEMENT ME!
 #A user wants to delete an item.
 @login_required
 def delete_item(request, user_id):
-    return HttpResponse("Hello! I'm still in the process of being implemented.")
-    #delete the item based on the user and the primary key
-    # delete_item = Item.objects.get(pk=request.item) #TODO: Figure out how to handle filtering using a foreign key's primary key
-    # delete_item.delete()
-    # return user_items(request)
+    if request.method == 'POST':
+        item_id = request.POST['delete']
+        item = Item.objects.get(pk=item_id)
+        item.delete()
+        return HttpResponseRedirect('/users/' + user_id + '/products')
+    else:
+        my_user = User.objects.get(pk=user_id)
+        my_items = Item.objects.filter(owner=my_user)
+        return render(request, 'lostnfound/delete.html', {'items': my_items })
 
-#TODO: IMPLEMENT ME!
 @login_required
 def report_lost(request, user_id):
     if request.method == "POST":

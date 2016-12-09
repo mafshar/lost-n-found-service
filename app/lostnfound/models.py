@@ -12,13 +12,13 @@ from django.forms import ModelForm
 
 class Item(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='Owner')
-    item_id = models.BigIntegerField(default=None)
+    qr_code = models.CharField(default=None, max_length=800, null=True)
     #None means the owner has the item. True means someone has found the item and scanned the QR code. False means the item is lost and has not been found.
     found = models.NullBooleanField('Found', default=None)
     name = models.CharField('Name', max_length=40)
 
     def __str__(self):
-        return self.name + " owned by " + self.owner.first_name
+        return self.name
 
 class FinderForm(forms.Form):
     name = forms.CharField(max_length=100)

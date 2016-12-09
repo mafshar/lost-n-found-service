@@ -14,7 +14,7 @@
         <tr>
             <td> {{item.name}} </td>
             {%if item.found %}
-              <td> FOUND </td>
+              <td style="color:red;"> FOUND </td>
             {%elif item.found == False %}
               <td> LOST </td>
             {%else%}
@@ -38,9 +38,10 @@
           <button type="submit" class="btn btn-primary"> Report Lost </button>
       </form> <br>
       {%endif%}
+   </div>
+   <a href="./products/settings" class="btn btn-primary"> Delete an Item </a>
   {%else%}
   <p> Looks like you haven't registered any items! Let's change that </p>
 {%endif%}
-<br><a href="./new" class="btn btn-primary"> Register an Item </a>
-
+  <a href="./new" class="btn btn-primary"> Register an Item </a>
 {% endblock %}
