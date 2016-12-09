@@ -27,20 +27,11 @@ def anon_home(request):
 
 #Render the login view
 def login_user(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            pk = str(user.pk)
-            return HttpResponseRedirect('./users/' + pk + '/products')
-        else:
-            form = AuthenticationForm()
-            return render(request, 'lostnfound/login.html', {'form': form, 'badLogin':True})
-    else:
-        form = AuthenticationForm()
-        return render(request, 'lostnfound/login.html', {'form': form})
+    if request.user.is_authenticated():
+        pk = str(request.user.pk)
+        return HttpResponseRedirect('./users/' + pk + '/products')
+    form = AuthenticationForm()
+    return render(request, 'lostnfound/login.html', {'form': form})
 
 #Render the signup view
 def signup(request):
@@ -54,15 +45,26 @@ def signup(request):
 #Handles a signup
 def authenticate_user(request):
     if request.method == 'POST':
-        #get user data from post request
-        form = MyUserCreationForm(request.POST)
-        if form.is_valid():
-            new_user = form.save(commit=True)
-            login(request, new_user)
-            pk = str(new_user.pk)
-            return HttpResponseRedirect('./users/' + pk + '/products')
-        else:
-            return render(request, 'lostnfound/signup.html', {'form': form})
+        if 'signup' in request.POST: #signup
+            form = MyUserCreationForm(request.POST)
+            if form.is_valid():
+                new_user = form.save(commit=True)
+                login(request, new_user)
+                pk = str(new_user.pk)
+                return HttpResponseRedirect('./users/' + pk + '/products')
+            else:
+                return render(request, 'lostnfound/signup.html', {'form': form})
+        else: #login
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                pk = str(user.pk)
+                return HttpResponseRedirect('./users/' + pk + '/products')
+            else:
+                form = AuthenticationForm()
+                return render(request, 'lostnfound/login.html', {'form': form, 'badLogin':True})
     else:
         return HttpResponseRedirect('./')
 
@@ -132,31 +134,31 @@ def register_item(request, user_id):
         new_item = form.save(commit=False)
         new_item.owner = my_user
         new_item.save()
-        url = "/users/" + str(my_user.pk) + "/found/" + str(new_item.pk)
-        uri = request.build_absolute_uri(url)
-        return print_qr_code(request, uri, new_item)
+        return HttpResponseRedirect("/users/" + user_id + "/products/" + str(new_item.pk))
     else:
         form = ItemForm()
         return render(request, 'lostnfound/register_item.html',{'form':form, 'user': my_user })
 
-def reprint_code(request, user_id, product_id):
-    item = Item.objects.get(pk=product_id)
-    url = item.qr_code
-    return print_qr_code(request, url, item)
-
 @login_required
-def print_qr_code(request, url, new_item):
+def print_qr_code(request, user_id, product_id):
+    item = Item.objects.get(pk=product_id)
+    qr_filename = str(item.pk) + ".png"
+    save = False
+    if item.qr_code is None: #new item!
+        save = True
+        url = "/users/" + user_id + "/found/" + product_id
+        uri = request.build_absolute_uri(url)
+        item.qr_code = url
+        item.save()
+    url = item.qr_code
     qr = QRCode(version=20, error_correction=ERROR_CORRECT_M)
     qr.add_data(url)
     qr.make()
     img = qr.make_image()
-    qr_filename = str(new_item.pk) + ".png"
-    if new_item.qr_code is None:
-        new_item.qr_code = url
-        img.save(settings.MEDIA_ROOT + qr_filename)
-        new_item.save()
+    if save:
+        img.save(settings.MEDIA_ROOT + qr_filename) #TODO: In production, we have to check where the QR image is being saved
     template_url = settings.MEDIA_URL +  qr_filename
-    return render(request, 'lostnfound/qr_code.html', {'qr_url': template_url , 'item': new_item})
+    return render(request, 'lostnfound/qr_code.html', {'qr_url': template_url , 'item': item})
 
 #A user wants to change an item's settings
 @login_required
@@ -165,14 +167,11 @@ def item_settings(request, user_id):
         item_id = request.POST['settings']
         item = Item.objects.get(pk=item_id)
         if 'delete' in request.POST:
-            print "DELETING AN ITEM"
             item.delete()
             return HttpResponseRedirect('/users/' + user_id + '/products')
         else:
-            print "JUST REPRINTING CODE"
             redirect = "/users/" + user_id + "/products/" + item_id
             return HttpResponseRedirect(redirect)
-
 
     else:
         my_user = User.objects.get(pk=user_id)

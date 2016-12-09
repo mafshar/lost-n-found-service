@@ -1,29 +1,17 @@
 {% extends "lostnfound/base.html" %}
 {% block content %}
 <h3> Welcome Back! </h3>
-{% if form.errors %}
-    {% for field in form %}
-        {% for error in field.errors %}
-            <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
-            </div>
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
-            <strong>{{ error|escape }}</strong>
-        </div>
-    {% endfor %}
-{% endif %}
 <div>
   {% if badLogin %}
-    <p style="color:red;"> Wrong Username/Password. Try again </p>
+  <div class="alert alert-danger">
+    <strong> Wrong Username/Password. Try again </strong>
+  </div>
   {%endif%}
-  <form method="POST">
+  <form method="POST" action="/users" name='login'>
     {% csrf_token %}
     Username: <div>{{form.username}}</div> <br>
     Password : <div>{{form.password}} </div> <br>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary" name='login'>Login</button>
   </form>
 </div>
 {% endblock %}
