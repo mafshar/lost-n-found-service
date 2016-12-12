@@ -68,6 +68,10 @@ def authenticate_user(request):
     else:
         return HttpResponseRedirect('./')
 
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('lostnfound/logged_out.html')
+
 #Handles GET & POST by a finder
 def handle_lost(request, user_id, product_id):
     if request.method == 'POST':
