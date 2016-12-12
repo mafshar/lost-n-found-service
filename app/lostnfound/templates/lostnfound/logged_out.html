@@ -1,0 +1,12 @@
+{% extends "lostnfound/base.html" %}
+{% block content %}
+  <h3> You have logged out. </h3>
+    <div>
+      New Users: <br></br>
+      <a href="{% url 'signup' %}" class="btn btn-primary">Register</a> </br>
+    </div></br>
+    <div>
+      Existing Users: <br></br>
+      <a href="{% url 'login_user' %}" class="btn btn-primary">Log In</a>
+    </div>
+{% endblock %}
