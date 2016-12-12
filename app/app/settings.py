@@ -90,8 +90,8 @@ DATABASES = {
         'NAME': 'lostnfound',
         'USER': 'admin',
         'PASSWORD': 'adminpassword',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'aa1k247caqgo35u.cdudplrl95mf.us-west-2.rds.amazonaws.com',
+        'PORT': '3306',
     }
 }
 
