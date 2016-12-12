@@ -26,7 +26,7 @@ SECRET_KEY = 'y!2j_m(5$8^b7f_!^yt3gt6c02qwn)h_063a&f&w40mc==_w!d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['lostandfound-env2.ni43hxtqsq.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['lostandfound-env.ni43hxtqsq.us-west-2.elasticbeanstalk.com/', 'localhost']
 
 
 # Application definition
