@@ -13,7 +13,7 @@
       {% if user.is_authenticated %}
       <div>
         {{ user.username }} <br> <br>
-        <a href="{% url 'logout' %}" class="btn btn-primary">Log Out</a>
+        <a href="{% url 'index' %}" class="btn btn-primary">Log Out</a>
       </div>
       {% endif %}
     </div>
