@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'lostnfound',
         'USER': 'admin',
-        'PASSWORD': 'adminpassword',
+        'PASSWORD': '(XphtRyt$5a/g43+',
         'HOST': 'aa1k247caqgo35u.cdudplrl95mf.us-west-2.rds.amazonaws.com',
         'PORT': '3306',
     }
