@@ -3,7 +3,7 @@
 <h4> Register a New Lost-N-Found Item </h4>
 <p> Hooray for responsibility! Simply fill out the form below to receive a QR code to keep track of your item </p>
 <div>
-  <form action="/users/{{user.pk}}/new" method="POST">
+  <form action="/users/{{pk}}/new" method="POST">
     <div style="font-weight:bold;"> Item Name:</div>
     <div> {{form.name}}</div> <br>
     <button type="submit" class="btn btn-primary">Register my Item</button>

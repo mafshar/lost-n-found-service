@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody>
-        {%for item in items%}
+        {%for idx, item in items.items%}
         <tr>
             <td> {{item.name}} </td>
             {%if item.found %}
@@ -30,7 +30,7 @@
           <label for="lost">Report a Lost Item</label>
           <select class="form-control input-small" name="lost">
             <option value="" disabled selected>--Select an Item--</option>
-            {%for item in items%}
+            {%for idx, item in items.items%}
               {%if item.found == None%}
                 <option value={{item.pk}} >{{item.name}}</option>
               {%endif%}
