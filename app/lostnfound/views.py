@@ -12,6 +12,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from django.core.mail import send_mail
 import sys
 from qrcode import *
 
@@ -80,8 +81,26 @@ def handle_lost(request, user_id, product_id):
             finder_name = finder.data['name']
             finder_email = finder.data['email']
             user_id = finder.data['user_id']
+            user_email = user_id.email
             item_id = finder.data['item_id']
             item = Item.objects.get(pk=item_id, owner__pk=user_id)
+            sender = 'noreply.itemfound@gmail.com'
+            receivers = [user_email, finder_email]
+            if finder_email:
+                try:
+                    send_mail(
+                        'Your item has been found!',
+                        'Someone has found your lost item! This message will facilitate your item\'s return.',
+                        sender,
+                        receivers)
+                except BadHeaderError:
+                    return HttpResponse('Invalid header found.')
+                return HttpResponseRedirect('/contact/thanks/')
+            else:
+                # In reality we'd use a form class
+                # to get proper validation errors.
+                return HttpResponse('Make sure all fields are entered and valid.')
+
             if item is not None:
                 item.found = True
                 item.save()

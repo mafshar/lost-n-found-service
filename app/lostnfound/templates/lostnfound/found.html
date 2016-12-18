@@ -2,13 +2,11 @@
 {% block content %}
 <h3> Thank you for finding '{{item}}' owned by {{user}}</h3>
 <p> Please enter your information below to begin the return process </p>
-<form action="https://formspree.io/noreply.itemfound@gmail.com"
-      method="POST">
-    Name: <input type="text" name="name"> <br><br>
-    Email: <input type="email" name="_replyto"><br><br>
+<form method="POST">
+    Name: <div> {{form.name}} </div> <br>
+    Email: <div> {{form.email}} </div> <br>
     {{form.user_id}}
     {{form.item_id}}
-    <input type="submit" class="btn btn-primary" value="Send" />
-    <input type="hidden" name="_next" value="thankyou.html" />
+    <input type="submit" class="btn btn-primary" value="Submit" />
 </form>
 {% endblock %}
