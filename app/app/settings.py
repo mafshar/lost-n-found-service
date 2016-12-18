@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['lostandfound-env.ni43hxtqsq.us-west-2.elasticbeanstalk.com', '
 # Application definition
 
 INSTALLED_APPS = [
+    'lostnfound.apps.LostnfoundConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 'rest_framework', # for any RESTful service
-    'lostnfound.apps.LostnfoundConfig',
 ]
 
 MIDDLEWARE = [
