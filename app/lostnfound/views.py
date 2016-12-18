@@ -200,11 +200,12 @@ def email_user(user_email, finder_email):
     Sends an email to this User.
     '''
     sender = 'noreply.itemfound@gmail.com'
+    message = 'Someone has found your lost item! This message will facilitate your item\'s return. FINDER: ' + finder_email 'USER: ' + user_email
     if finder_email:
         try:
             send_mail(
                 'Your item has been found!',
-                'Someone has found your lost item! This message will facilitate your item\'s return. FINDER: ' + finder_email 'USER: ' + user_email,
+                message,
                 sender,
                 [user_email, finder_email])
         except BadHeaderError:
