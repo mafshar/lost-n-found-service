@@ -38,7 +38,6 @@ router = routers.DefaultRouter()
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url(r'^admin/', include('django.contrib.admin')),
     url(r'^$', views.index, name='index'),
     url(r'^', include(router.urls)),
     url(r'^login$', views.login_user, name='login_user'), #render login template
@@ -52,6 +51,7 @@ urlpatterns = [
     url(r'^users/(?P<user_id>.*)/products/(?P<product_id>.*)$', views.print_qr_code, name='print_qr_code'), #renders view for QR code
     url(r'^users/(?P<user_id>.*)/found/(?P<product_id>.*)$', views.handle_lost, name='handle_lost'), #GET & POST for a finder scanning a QR code
     url('^', include('django.contrib.auth.urls')),
+    url(r'^admin/', include('django.contrib.admin')),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 if settings.DEBUG:
