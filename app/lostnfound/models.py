@@ -49,3 +49,23 @@ class MyUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+    def email_user(self, finder_email):
+        '''
+        Sends an email to this User.
+        '''
+        sender = 'noreply.itemfound@gmail.com'
+        if finder_email:
+            try:
+                send_mail(
+                    'Your item has been found!',
+                    'Someone has found your lost item! This message will facilitate your item\'s return.',
+                    sender,
+                    [self.cleaned_data["email"], finder_email])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return HttpResponseRedirect('/contact/thanks/')
+        else:
+            # In reality we'd use a form class
+            # to get proper validation errors.
+            return HttpResponse('Make sure all fields are entered and valid.')
