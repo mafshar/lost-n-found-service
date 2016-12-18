@@ -158,7 +158,7 @@ def register_item(request, user_id):
         return HttpResponseRedirect("/users/" + user_id + "/products/" + signer.sign(str(new_item.pk)))
     else:
         form = ItemForm()
-        return render(request, 'lostnfound/register_item.html',{'form':form, 'pk': user_id }))
+        return render(request, 'lostnfound/register_item.html',{'form':form, 'pk': user_id })
 
 @login_required
 def print_qr_code(request, user_id, product_id):
