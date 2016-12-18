@@ -12,7 +12,7 @@ from django.forms import ModelForm
 
 class Item(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='Owner')
-    qr_code = models.CharField(default=None, max_length=800, null=True)
+    qr_code = models.CharField(default=None, max_length=1000, null=True)
     #None means the owner has the item. True means someone has found the item and scanned the QR code. False means the item is lost and has not been found.
     found = models.NullBooleanField('Found', default=None)
     name = models.CharField('Name', max_length=40)

@@ -43,12 +43,12 @@ urlpatterns = [
     url(r'^login$', views.login_user, name='login_user'), #render login template
     url(r'^signup$', views.signup, name='signup'), #render signup template
     url(r'^users$', views.authenticate_user, name='authenticate_user'), #POST for login/signup
-    url(r'^users/(?P<user_id>[0-9]+)/products$', views.user_items, name='user_items'), #render user items
-    url(r'^users/(?P<user_id>[0-9]+)/new$', views.register_item, name='register_item'), #GET & POST for registering a new item
-    url(r'^users/(?P<user_id>[0-9]+)/products/(?P<product_id>[0-9]+)$', views.print_qr_code, name='print_qr_code'), #renders view for QR code
-    url(r'^users/(?P<user_id>[0-9]+)/found/(?P<product_id>[0-9]+)$', views.handle_lost, name='handle_lost'), #GET & POST for a finder scanning a QR code
-    url(r'^users/(?P<user_id>[0-9]+)/products/settings', views.item_settings, name='item_settings'), #GET & POST for item settings
-    url(r'^users/(?P<user_id>[0-9]+)/report/products$', views.report_lost, name='report_lost'), #POST for user reporting a lost item
+    url(r'^users/(?P<user_id>.*)/report/products$', views.report_lost, name='report_lost'), #POST for user reporting a lost item
+    url(r'^users/(?P<user_id>.*)/products$', views.user_items, name='user_items'), #render user items
+    url(r'^users/(?P<user_id>.*)/new$', views.register_item, name='register_item'), #GET & POST for registering a new item
+    url(r'^users/(?P<user_id>.*)/products/settings', views.item_settings, name='item_settings'), #GET & POST for item settings
+    url(r'^users/(?P<user_id>.*)/products/(?P<product_id>.*)$', views.print_qr_code, name='print_qr_code'), #renders view for QR code
+    url(r'^users/(?P<user_id>.*)/found/(?P<product_id>.*)$', views.handle_lost, name='handle_lost'), #GET & POST for a finder scanning a QR code
     url('^', include('django.contrib.auth.urls')),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

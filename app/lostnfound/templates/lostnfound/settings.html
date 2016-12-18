@@ -7,8 +7,8 @@
     <label for="settings">Select an Item</label>
     <select class="form-control input-small" name="settings" id="select">
       <option value="" disabled selected>--Select an Item--</option>
-      {%for item in items%}
-        <option value={{item.pk}} >{{item.name}}</option>
+      {%for idx, value in items.items%}
+          <option value={{value.pk}} >{{value.name}}</option>
       {%endfor%}
     </select><br>
     <button type="submit" name="delete" class="btn btn-primary"> Delete Item  </button>
