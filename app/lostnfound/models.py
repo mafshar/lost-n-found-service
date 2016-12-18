@@ -31,7 +31,7 @@ class ItemForm(ModelForm):
     class Meta:
         model = Item
         fields = ("name",)
-        exclude = ("owner","qr_code")
+        exclude = ("owner","qr_code") 
 
 
 class MyUserCreationForm(UserCreationForm):
