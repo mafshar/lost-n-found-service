@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['lostandfound-env.ni43hxtqsq.us-west-2.elasticbeanstalk.com', '
 # Application definition
 
 INSTALLED_APPS = [
+    'lostnfound',
     'lostnfound.apps.LostnfoundConfig',
     'django.contrib.admin',
     'django.contrib.auth',
