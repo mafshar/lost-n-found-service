@@ -204,7 +204,7 @@ def email_user(user_email, finder_email):
         try:
             send_mail(
                 'Your item has been found!',
-                'Someone has found your lost item! This message will facilitate your item\'s return.',
+                'Someone has found your lost item! This message will facilitate your item\'s return. FINDER: ' + finder_email 'USER: ' + user_email,
                 sender,
                 [user_email, finder_email])
         except BadHeaderError:
