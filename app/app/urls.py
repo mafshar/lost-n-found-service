@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^', include(router.urls)),
     url(r'^login$', views.login_user, name='login_user'), #render login template
-    url(r'^logout$', views.logout_view, name='logout'), #render logout template
+    url(r'^logout/$', views.logout_view, name='logout'), #render logout template
     url(r'^signup$', views.signup, name='signup'), #render signup template
     url(r'^users$', views.authenticate_user, name='authenticate_user'), #POST for login/signup
     url(r'^users/(?P<user_id>.*)/report/products$', views.report_lost, name='report_lost'), #POST for user reporting a lost item
