@@ -26,7 +26,7 @@ SECRET_KEY = 'y!2j_m(5$8^b7f_!^yt3gt6c02qwn)h_063a&f&w40mc==_w!d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['lostandfound-env.ni43hxtqsq.us-west-2.elasticbeanstalk.com', 'localhost']
+ALLOWED_HOSTS = ['lostnfound-env--db.uupmur3xei.us-west-2.elasticbeanstalk.com', 'localhost']
 
 
 # Application definition
@@ -89,8 +89,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ebdb',
         'USER': 'ebroot',
-        'PASSWORD': 'e2Fcp3TU$!Zz538z',
-        'HOST': 'aa1k247caqgo35u.cdudplrl95mf.us-west-2.rds.amazonaws.com',
+        'PASSWORD': 'largescale16',
+        'HOST': 'aarsyfloeadkxv.cdudplrl95mf.us-west-2.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
@@ -112,7 +112,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-STATIC_ROOT = ''
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = ( os.path.join('static'), )
 
