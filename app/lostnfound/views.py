@@ -16,7 +16,6 @@ from django.core.mail import send_mail
 from django.core.signing import Signer
 import sys
 from qrcode import *
-from hints import set_user_for_sharding
 
 signer = Signer()
 
@@ -54,14 +53,10 @@ def authenticate_user(request):
             form = MyUserCreationForm(request.POST)
             if form.is_valid():
                 new_user = form.save(commit=True)
-                # new_user.save()
-                user = authenticate(username=new_user.username, password=form.clean_password2())
-                if user is not None:
-                    login(request, user)
-                    pk = signer.sign(str(new_user.pk))
-                    return HttpResponseRedirect('./users/' + pk + '/products')
-                else:
-                    raise Exception
+                new_user.save()
+                login(request, new_user)
+                pk = signer.sign(str(new_user.pk))
+                return HttpResponseRedirect('./users/' + pk + '/products')
             else:
                 return render(request, 'lostnfound/signup.html', {'form': form})
         else: #login
@@ -90,8 +85,10 @@ def handle_lost(request, user_id, product_id):
             finder_name = finder.data['name']
             finder_email = finder.data['email']
             user_id = int(signer.unsign(finder.data['user_id']))
+            user_id = user_id[:1]
             item_id = int(signer.unsign(finder.data['item_id']))
-            item = Item.objects.get(pk=item_id, owner=user_id)
+            item_id = item_id[0]
+            item = Item.objects.get(pk=int(signer.unsign(item_id)), owner__pk=int(signer.unsign(user_id)))
             user = User.objects.get(pk=int(signer.unsign(user_id)))
             user_email = user.email
             if item is not None:
@@ -121,8 +118,7 @@ def user_items(request, user_id):
     except IndexError:
         raise Exception #yikes, there's no user!
     #Find all of user items
-    my_items = Item.objects.filter(owner=my_user.pk)
-    set_user_for_sharding(my_items, my_user.id)
+    my_items = Item.objects.filter(owner=my_user)
     show_form = False
     signed_items = {}
     counter = 0
@@ -159,7 +155,7 @@ def register_item(request, user_id):
     if request.method == 'POST':
         form = ItemForm(request.POST)
         new_item = form.save(commit=False)
-        new_item.owner = my_user.pk
+        new_item.owner = my_user
         new_item.save()
         return HttpResponseRedirect("/users/" + user_id + "/products/" + signer.sign(str(new_item.pk)))
     else:
@@ -168,7 +164,7 @@ def register_item(request, user_id):
 
 @login_required
 def print_qr_code(request, user_id, product_id):
-    item = Item.objects.get(pk=signer.unsign(product_id))
+    item = Item.objects.get(pk=int(signer.unsign(product_id)))
     qr_filename = str(item.pk) + ".png"
     save = False
     if item.qr_code is None: #new item!
@@ -202,8 +198,7 @@ def item_settings(request, user_id):
 
     else:
         my_user = User.objects.get(pk=int(signer.unsign(user_id)))
-        my_items = Item.objects.filter(owner=my_user.pk)
-        set_user_for_sharding(my_items, my_user.id)
+        my_items = Item.objects.filter(owner=my_user)
         signed_items = {}
         counter = 0
         for item in my_items:
@@ -213,7 +208,8 @@ def item_settings(request, user_id):
             }
             signed_items[str(counter)] = new_item
             counter += 1
-
+        print signed_items
+        print my_items
         return render(request, 'lostnfound/settings.html', {'items': signed_items })
 
 @login_required
