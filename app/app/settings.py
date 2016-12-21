@@ -45,12 +45,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'django.middleware.security.SecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -92,9 +89,26 @@ DATABASES = {
         'PASSWORD': 'largescale16',
         'HOST': 'aarsyfloeadkxv.cdudplrl95mf.us-west-2.rds.amazonaws.com',
         'PORT': '3306',
-    }
+    },
+    'auth_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ebdb',
+        'USER': 'ebroot',
+        'PASSWORD': 'largescale16',
+        'HOST': 'ebdbauth.cdudplrl95mf.us-west-2.rds.amazonaws.com:',
+        'PORT': '3306',
+    },
+    'db1': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ebdb',
+        'USER': 'ebroot',
+        'PASSWORD': 'largescale16',
+        'HOST': 'ebdb1.cdudplrl95mf.us-west-2.rds.amazonaws.com',
+        'PORT': '3306',
+    },
 }
 
+DATABASE_ROUTERS = ['lostnfound.routers.UserRouter']
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
