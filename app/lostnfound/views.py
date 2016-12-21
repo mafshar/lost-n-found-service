@@ -121,7 +121,7 @@ def user_items(request, user_id):
     signed_items = {}
     counter = 0
     for item in my_items:
-        if item.found is None:
+        if item.found is None or item.found is True:
             show_form = True
         new_item = {
         'pk': signer.sign(item.pk),
@@ -189,6 +189,10 @@ def item_settings(request, user_id):
         item = Item.objects.get(pk=int(signer.unsign(item_id)))
         if 'delete' in request.POST:
             item.delete()
+            return HttpResponseRedirect('/users/' + user_id + '/products')
+        elif 'reset' in request.POST:
+            item.found = None
+            item.save()
             return HttpResponseRedirect('/users/' + user_id + '/products')
         else:
             redirect = "/users/" + user_id + "/products/" + item_id
