@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'ebdb',
         'USER': 'ebroot',
         'PASSWORD': 'largescale16',
-        'HOST': 'aarsyfloeadkxv.cdudplrl95mf.us-west-2.rds.amazonaws.com',
+        'HOST': 'ebdbauth.cdudplrl95mf.us-west-2.rds.amazonaws.com',
         'PORT': '3306',
     },
     'db1': {
@@ -106,7 +106,7 @@ DATABASES = {
         'NAME': 'ebdb',
         'USER': 'ebroot',
         'PASSWORD': 'largescale16',
-        'HOST': 'aarsyfloeadkxv.cdudplrl95mf.us-west-2.rds.amazonaws.com',
+        'HOST': 'ebdb1.cdudplrl95mf.us-west-2.rds.amazonaws.com',
         'PORT': '3306',
     },
 }
