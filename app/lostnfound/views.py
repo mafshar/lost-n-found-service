@@ -118,7 +118,7 @@ def user_items(request, user_id):
     except IndexError:
         raise Exception #yikes, there's no user!
     #Find all of user items
-    my_items = Item.objects.filter(owner=my_user)
+    my_items = Item.objects.filter(owner=signer.unsign(user_id))
     show_form = False
     signed_items = {}
     counter = 0
