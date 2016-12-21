@@ -85,9 +85,7 @@ def handle_lost(request, user_id, product_id):
             finder_name = finder.data['name']
             finder_email = finder.data['email']
             user_id = int(signer.unsign(finder.data['user_id']))
-            user_id = user_id[:1]
             item_id = int(signer.unsign(finder.data['item_id']))
-            item_id = item_id[0]
             item = Item.objects.get(pk=item_id, owner__pk=user_id)
             user = User.objects.get(pk=user_id)
             user_email = user.email
