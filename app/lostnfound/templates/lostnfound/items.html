@@ -31,7 +31,7 @@
           <select class="form-control input-small" name="lost">
             <option value="" disabled selected>--Select an Item--</option>
             {%for idx, item in items.items%}
-              {%if item.found == None%}
+              {%if item.found == None or item.found == True %}
                 <option value={{item.pk}} >{{item.name}}</option>
               {%endif%}
             {%endfor%}

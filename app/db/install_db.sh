@@ -16,5 +16,5 @@ if [ $# -gt 0 ]; then
 fi
 
 for db in `seq 2 4`; do
-  mysql -u root -p < ${sql_file}
+  mysql -u root -p  < ${sql_file}
 done
