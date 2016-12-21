@@ -114,11 +114,11 @@ def handle_lost(request, user_id, product_id):
 def user_items(request, user_id):
     #Retrieve user from the request object
     try:
-        my_user = User.objects.get(pk=signer.unsign(user_id))
+        my_user = User.objects.get(pk=int(signer.unsign(user_id)))
     except IndexError:
         raise Exception #yikes, there's no user!
     #Find all of user items
-    my_items = Item.objects.filter(owner=my_user)
+    my_items = Item.objects.filter(owner=int(signer.unsign(user_id)))
     show_form = False
     signed_items = {}
     counter = 0
