@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'django.middleware.security.SecurityMiddleware',
@@ -92,7 +92,23 @@ DATABASES = {
         'PASSWORD': 'largescale16',
         'HOST': 'aarsyfloeadkxv.cdudplrl95mf.us-west-2.rds.amazonaws.com',
         'PORT': '3306',
-    }
+    },
+    'auth_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ebdb',
+        'USER': 'ebroot',
+        'PASSWORD': 'largescale16',
+        'HOST': 'aarsyfloeadkxv.cdudplrl95mf.us-west-2.rds.amazonaws.com',
+        'PORT': '3306',
+    },
+    'db1': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ebdb',
+        'USER': 'ebroot',
+        'PASSWORD': 'largescale16',
+        'HOST': 'aarsyfloeadkxv.cdudplrl95mf.us-west-2.rds.amazonaws.com',
+        'PORT': '3306',
+    },
 }
 
 

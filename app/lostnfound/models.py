@@ -11,7 +11,8 @@ from django import forms
 from django.forms import ModelForm
 
 class Item(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='Owner')
+    owner = models.BigIntegerField(db_index=True)
+    # owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='Owner')
     qr_code = models.CharField(default=None, max_length=1000, null=True)
     #None means the owner has the item. True means someone has found the item and scanned the QR code. False means the item is lost and has not been found.
     found = models.NullBooleanField('Found', default=None)
@@ -37,7 +38,7 @@ class ItemForm(ModelForm):
 class MyUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=50, required=True)
     email = forms.EmailField(required=True)
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = User
         fields = ("first_name", "username", "email", "password1", "password2")
 
